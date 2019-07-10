@@ -166,7 +166,13 @@ class Analyser
 
 							foreach ($ruleErrors as $ruleError) {
 								$line = $node->getLine();
-								$fileName = $scope->getFileDescription();
+								$extra = [];
+								if ($scope->isInTrait()) {
+								    $fileName = $scope->getTraitReflection()->getFileName();
+								    $extra[] = $scope->getClassReflection()->getFileName();
+                                } else {
+								    $fileName = $scope->getFile();
+                                }
 								if (is_string($ruleError)) {
 									$message = $ruleError;
 								} else {
@@ -184,7 +190,7 @@ class Analyser
 										$fileName = $ruleError->getFile();
 									}
 								}
-								$fileErrors[] = new Error($message, $fileName, $line);
+								$fileErrors[] = new Error($message, $fileName, $line, true, $extra);
 							}
 						}
 

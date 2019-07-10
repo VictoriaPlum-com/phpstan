@@ -17,13 +17,17 @@ class Error
 	/** @var bool */
 	private $canBeIgnored;
 
-	public function __construct(string $message, string $file, ?int $line = null, bool $canBeIgnored = true)
+	/** @var array */
+    private $extraFiles;
+
+    public function __construct(string $message, string $file, ?int $line = null, bool $canBeIgnored = true, array $extraFiles = [])
 	{
 		$this->message = $message;
 		$this->file = $file;
 		$this->line = $line;
 		$this->canBeIgnored = $canBeIgnored;
-	}
+        $this->extraFiles = $extraFiles;
+    }
 
 	public function getMessage(): string
 	{
@@ -45,4 +49,8 @@ class Error
 		return $this->canBeIgnored;
 	}
 
+    public function getExtraFiles(): array
+    {
+        return $this->extraFiles;
+    }
 }
